@@ -1,5 +1,5 @@
-# REQUIRES: rm(list=ls()), then source 27-07_1 through 27-07_10 in order (canonical
-# chain per log Section 2) before running this. Confirm educ/region/gender exist
+# REQUIRES: rm(list=ls()), then source 27-07_1 and 27-07_10 only (verified 2026-07-27:
+# 2-9 not needed, script 10 is self-contained). Confirm educ/region/gender exist
 # as columns in train_long once sourced.
 
 library(survival)
