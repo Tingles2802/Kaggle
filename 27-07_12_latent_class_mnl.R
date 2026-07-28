@@ -12,7 +12,7 @@
 # ~52/48. Worse than clogit baseline (1.180861) and Model 12 (1.162971) on this one fold --
 # not conclusive on its own, running the full 5 folds below for a real comparison.
 
-rm(list = ls())
+# rm(list = ls())
 
 library(data.table)
 library(gmnl)
