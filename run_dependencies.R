@@ -29,12 +29,12 @@ script_list <- c(
   "28-07_9_attribute_demo_interactions.R",       # 27
   "28-07_10_relative_features_trees.R",          # 28
   "28-07_11_two_stage_optout.R",                 # 29
-  "29-07_7_gmnl_full_cv.R"
+  "29-07_2_submission_model29.R"
 )
 
 # 2. Select the indices of the files you want to run
 # Example: To run files 1, 2, and the tuning script at 15
-run_indices <- c(1, 10, 30)
+run_indices <- c(1, 10, 12, 25, 29, 30)
 
 # 3. Execute the selected files
 for (idx in run_indices) {
