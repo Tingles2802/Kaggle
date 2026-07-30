@@ -77,4 +77,4 @@ for (k in 1:5) {
   cat("xgboost fold", k, "log-loss:", cv_scores_xgb[k], "\n")
 }
 cat("\nxgboost CV — Mean:", mean(cv_scores_xgb), " SD:", sd(cv_scores_xgb), "\n")
-cat("\nvs clogit baseline:", mean(fold_loss_Bp, na.rm = TRUE), "\n")
+cat("\nxgboost CV complete.\n")

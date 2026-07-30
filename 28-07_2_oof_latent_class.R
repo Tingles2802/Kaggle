@@ -10,8 +10,6 @@
 # ensembling. compute_lc_predictions() is unchanged/still validated (see
 # 27-07_12 header).
 
-rm(list = ls())
-
 library(data.table)
 library(gmnl)
 library(mlogit)
