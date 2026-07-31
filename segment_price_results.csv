@@ -1,0 +1,5 @@
+variant,cv_mean,cv_sd,fold1,fold2,fold3,fold4,fold5,delta_vs_baseline,better_than_baseline
+baseline,,,,,,,,,
+varA_price_segment_only,,,,,,,,,
+varB_segment_main_plus_interaction,,,,,,,,,
+varC_both,,,,,,,,,
