@@ -6,7 +6,7 @@
 # for full-data feasibility. NOT for CV score / submission use.
 # Paste in: console (run top to bottom, inspect each print() output manually).
 
-rm(list = ls())
+# rm(list = ls())
 library(data.table)
 library(mlogit)
 

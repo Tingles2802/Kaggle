@@ -24,7 +24,7 @@ train_raw[, y := factor(max.col(as.matrix(.SD)), levels = 1:4), .SDcols = c("Ch1
 
 feat_cols_nnet <- c(attr_cols, price_cols, demo_cols)
 f_nnet <- as.formula(paste("y ~", paste(feat_cols_nnet, collapse = " + ")))
-
+set.seed(2024)
 fit_nnet_full <- multinom(f_nnet, data = train_raw, maxit = 300, trace = FALSE)
 pred_nnet_test <- predict(fit_nnet_full, newdata = test_raw, type = "probs")
 stopifnot(ncol(pred_nnet_test) == 4)
@@ -45,6 +45,7 @@ X_te <- scale(X_all[(n_tr+1):nrow(X_all), ],
               center = attr(X_tr, "scaled:center"), scale = attr(X_tr, "scaled:scale"))
 
 y_knn <- as.integer(train_raw$y)
+set.seed(2024)
 pred_knn <- knn(X_tr, X_te, cl = as.factor(y_knn), k = 50, prob = TRUE)
 won <- attr(pred_knn, "prob")
 cls <- as.integer(as.character(pred_knn))
