@@ -4,6 +4,7 @@ library(data.table); library(xgboost)
 if (!exists("oof_nnet")) oof_nnet <- fread("oof_nnet.csv")
 if (!exists("oof_knn"))  oof_knn  <- fread("oof_knn.csv")
 
+oof_knn <- fread("oof_knn.csv")
 d_train_ext <- merge(oof_all, oof_nnet, by = c("Case","Task"))
 d_train_ext <- merge(d_train_ext, oof_knn, by = c("Case","Task"))
 stopifnot(nrow(d_train_ext) == 21565)  # guard against join row loss
