@@ -59,19 +59,30 @@ run_cv <- function(weights = NULL) {
     fit <- xgb.train(params, dtrain, nrounds = nrounds, verbose = 0)
     oof[te_idx, ] <- predict(fit, dtest)
   }
-  mlogloss(actual_mat, oof)
+  list(cv = mlogloss(actual_mat, oof), oof = oof)
 }
 
-cv_baseline <- run_cv(weights = NULL)
-cat("Baseline CV (expect ~1.176378):", cv_baseline, "\n")
+# test segment shares (must sum to ~1; used for reweighted eval, distinct from train fit-time weights above)
+test_share <- data.table(
+  segment = c("Small Car", "Midsize Car", "Midsize Luxury Utility segements",
+              "Midsize Utility", "Prestige Luxury Sedan", "Full-size Pickup"),
+  share = c(0.000, 0.034, 0.319, 0.061, 0.369, 0.217)
+)
 
-cv_weighted <- run_cv(weights = train$w)
-cat("Weighted CV:", cv_weighted, "\n")
-cat("Delta (weighted - baseline):", cv_weighted - cv_baseline, "\n")
+reweighted_loss <- function(oof) {
+  per_row_ll <- -rowSums(actual_mat * log(pmax(pmin(oof, 1 - 1e-15), 1e-15)))
+  dt <- data.table(segment = train$segment, ll = per_row_ll)
+  seg_mean <- dt[, .(mean_ll = mean(ll)), by = segment]
+  seg_mean <- merge(seg_mean, test_share, by = "segment")
+  sum(seg_mean$mean_ll * seg_mean$share) / sum(seg_mean$share)
+}
 
-# ALSO compute test-share-reweighted score of the WEIGHTED model's OOF (route-b style check):
-# i.e. does the weighted model's own reweighted-eval CV move closer to actual LB (~1.196)?
-seg_eval_w <- merge(data.table(idx = 1:nrow(train), segment = train$segment), seg_weight, by = "segment")
-setorder(seg_eval_w, idx)
-# (paste back OOF matrices from run_cv here if per-segment breakdown is wanted - not built into
-# run_cv() above to keep this script minimal; ask Claude to extend if needed)
+res_baseline <- run_cv(weights = NULL)
+cat("Baseline CV (expect ~1.176378):", res_baseline$cv, "\n")
+cat("Baseline test-share-reweighted CV:", reweighted_loss(res_baseline$oof), "\n")
+
+res_weighted <- run_cv(weights = train$w)
+cat("Weighted CV:", res_weighted$cv, "\n")
+cat("Weighted test-share-reweighted CV:", reweighted_loss(res_weighted$oof), "\n")
+
+cat("\nReference: unweighted-training xgb20 reweighted CV from earlier this session = 1.247667\n")
